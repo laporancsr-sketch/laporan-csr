@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#14532D" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>CSR - Laporan Harian CSR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    :root {
+      --primary-dark: #14532D;
+      --primary: #1B6B38;
+      --primary-light: #2E8B57;
+      --primary-soft: #E8F5E9;
+      --primary-border: #C8E6C9;
+      --bg-app: #F3F6F4;
+      --surface: #FFFFFF;
+      --text-main: #1A241E;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --danger: #DC2626;
+      --danger-soft: #FEE2E2;
+      --info: #2563EB;
+      --info-soft: #DBEAFE;
+      --shadow-sm: 0 2px 8px rgba(20, 83, 45, 0.06);
+      --shadow-md: 0 6px 18px rgba(20, 83, 45, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #DCE5DF;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* Mobile Frame */
+    .app-shell {
+      width: 100%;
+      max-width: 440px;
+      min-height: 100vh;
+      background: var(--bg-app);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 30px rgba(0,0,0,0.12);
+      overflow-x: hidden;
+    }
+
+    /* Splash Screen */
+    #splash-screen {
+      position: fixed;
+      inset: 0;
+      max-width: 440px;
+      margin: 0 auto;
+      z-index: 9999;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 55%, #1B6B38 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 80px 24px 60px;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
+    }
+    #splash-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .splash-logo-wrap {
+      text-align: center;
+      margin-top: 40px;
+    }
+    .leaf-emblem {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .splash-brand {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+    .splash-subtitle {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2B3A30;
+      margin-top: 8px;
+    }
+    .splash-tagline {
+      font-size: 14px;
+      color: #475569;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+    .splash-loader {
+      text-align: center;
+      color: #FFFFFF;
+    }
+    .spinner {
+      width: 34px;
+      height: 34px;
+      border: 3px solid rgba(255,255,255,0.28);
+      border-top-color: #FFFFFF;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Login Screen */
+    #login-screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+      background: var(--bg-app);
+    }
+    .login-hero {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: #FFFFFF;
+      padding: 44px 24px 36px;
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
+    }
+    .login-brand-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .login-brand-badge {
+      width: 44px;
+      height: 44px;
+      background: #FFFFFF;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-dark);
+      font-size: 22px;
+    }
+    .login-card {
+      background: #FFFFFF;
+      margin: -20px 18px 24px;
+      padding: 22px 20px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-md);
+    }
+    .quick-accounts {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--border);
+    }
+    .quick-account-btn {
+      width: 100%;
+      text-align: left;
+      background: var(--primary-soft);
+      border: 1px solid var(--primary-border);
+      padding: 10px 12px;
+      border-radius: 12px;
+      margin-top: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: inherit;
+      transition: 0.2s;
+    }
+    .quick-account-btn:hover { background: #DCFCE7; }
+
+    /* Main App Container */
+    #main-app {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+      padding-bottom: 76px;
+    }
+
+    /* Headers */
+    .header-home {
+      background: var(--primary-dark);
+      color: #FFFFFF;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-brand-title {
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .header-brand-sub {
+      font-size: 11px;
+      opacity: 0.85;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .notif-bell {
+      position: relative;
+      background: none;
+      border: none;
+      color: #FFFFFF;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .avatar-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #E2E8F0;
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(255,255,255,0.8);
+      cursor: pointer;
+    }
+
+    .header-subpage {
+      background: var(--primary-dark);
+      color: #FFFFFF;
+      padding: 15px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-sub-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .btn-icon-white {
+      background: none;
+      border: none;
+      color: #FFFFFF;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .header-sub-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    /* Views */
+    .view-section {
+      display: none;
+      padding: 16px;
+      animation: fadeIn 0.2s ease;
+    }
+    .view-section.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Typography */
+    .welcome-block {
+      margin-bottom: 14px;
+    }
+    .welcome-small {
+      font-size: 14px;
+      color: #334155;
+      font-weight: 500;
+    }
+    .welcome-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 2px 0;
+    }
+    .welcome-role {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      margin-bottom: 14px;
+    }
+    .card-row-between {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .pill-aktif {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 99px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .summary-metric {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 14px;
+    }
+    .summary-metric-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #334155;
+      font-weight: 500;
+    }
+    .summary-metric-val {
+      font-weight: 800;
+      color: var(--primary-dark);
+      font-size: 15px;
+    }
+
+    .info-banner-green {
+      margin-top: 12px;
+      background: var(--primary-soft);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+    .info-banner-green i {
+      font-size: 18px;
+      color: var(--primary);
+    }
+
+    /* Primary CTA Button */
+    .btn-primary-full {
+      width: 100%;
+      background: var(--primary-dark);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 14px;
+      padding: 15px 18px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 16px;
+      transition: transform 0.15s ease, background 0.2s;
+    }
+    .btn-primary-full:active { transform: scale(0.99); }
+    .btn-primary-center {
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* Statistik Grid */
+    .section-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-main);
+    }
+    .btn-pill-sm {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      border: none;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+    .stat-box {
+      padding: 8px 4px;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: background 0.2s;
+    }
+    .stat-box:hover { background: #F8FAFC; }
+    .stat-icon {
+      color: var(--primary);
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    .stat-num {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 600;
+    }
+
+    /* Form Inputs */
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+    .form-label i {
+      color: var(--primary-dark);
+      width: 16px;
+      text-align: center;
+    }
+    .form-control {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-main);
+      background: #FFFFFF;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-control:focus {
+      border-color: var(--primary);
+    }
+    .input-inline-unit {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .input-inline-unit span {
+      font-weight: 700;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    /* Multi-Photo Grid (+ Tambah Foto) */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .photo-thumb-item {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #F1F5F9;
+    }
+    .photo-thumb-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .btn-remove-photo {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(220, 38, 38, 0.9);
+      color: #FFFFFF;
+      border: none;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-add-photo {
+      aspect-ratio: 1 / 1;
+      border: 1.5px dashed #94A3B8;
+      border-radius: 12px;
+      background: #F8FAFC;
+      color: var(--primary-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+    .btn-add-photo:hover {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+    }
+    .btn-add-photo i { font-size: 20px; }
+
+    /* Filter Chips & Report List */
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+    .filter-chip {
+      padding: 7px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      background: #FFFFFF;
+      color: #475569;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+    .filter-chip.active {
+      background: var(--primary-dark);
+      color: #FFFFFF;
+      border-color: var(--primary-dark);
+    }
+
+    .report-item-card {
+      background: #FFFFFF;
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .report-item-card:active { transform: scale(0.99); }
+    .report-item-thumb {
+      width: 66px;
+      height: 66px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #E2E8F0;
+      flex-shrink: 0;
+    }
+    .report-item-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .report-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+    .report-date {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .status-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .status-Disetujui { background: var(--primary-soft); color: var(--primary-dark); }
+    .status-Menunggu { background: var(--info-soft); color: var(--info); }
+    .status-Ditolak { background: var(--danger-soft); color: var(--danger); }
+
+    .report-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .report-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* Detail Report */
+    .detail-hero-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 14px;
+      margin: 12px 0;
+      background: #E2E8F0;
+    }
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .detail-table td {
+      padding: 7px 4px;
+      vertical-align: top;
+    }
+    .detail-table td:first-child {
+      color: var(--text-muted);
+      width: 135px;
+      font-weight: 600;
+    }
+    .detail-docs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .detail-docs-grid img {
+      width: 100%;
+      height: 115px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    /* Search Box */
+    .search-box {
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .search-box i {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+    .search-box input {
+      padding-left: 38px;
+      background: #FFFFFF;
+    }
+
+    /* Beneficiary & Menu Lists */
+    .list-row-card {
+      background: #FFFFFF;
+      border-radius: 14px;
+      padding: 13px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .list-row-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .icon-circle-green {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    /* Profile Header Card */
+    .profile-hero-card {
+      text-align: center;
+      padding: 22px 16px;
+    }
+    .profile-avatar-lg {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-size: 28px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      border: 3px solid var(--primary);
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 440px;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 4px 10px;
+      z-index: 60;
+    }
+    .nav-item {
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: #64748B;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      flex: 1;
+    }
+    .nav-item i { font-size: 19px; }
+    .nav-item.active {
+      color: var(--primary-dark);
+      font-weight: 800;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 86px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 11px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 999;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- 1. SPLASH SCREEN -->
+  <div id="splash-screen">
+    <div class="splash-logo-wrap">
+      <div class="leaf-emblem">
+        <svg width="82" height="82" viewBox="0 0 82 82" fill="none">
+          <path d="M41 64C41 42 25 26 9 26C9 47 23 64 41 64Z" fill="#2E8B57"/>
+          <path d="M41 64C41 38 57 18 75 18C75 43 60 64 41 64Z" fill="#14532D"/>
+          <path d="M41 64C41 48 34 36 25 32" stroke="#A7F3D0" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M41 64C41 45 49 32 60 27" stroke="#A7F3D0" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="splash-brand">CSR</div>
+      <div class="splash-subtitle">Laporan Harian CSR</div>
+      <div class="splash-tagline">Bersama untuk<br/>Dampak yang Lebih Baik</div>
+    </div>
+    <div class="splash-loader">
+      <div class="spinner"></div>
+      <div style="font-size:14px; font-weight:600;">Memuat Aplikasi...</div>
+    </div>
+  </div>
+
+  <!-- 2. LOGIN SCREEN (3 PETUGAS CSR PERMANEN) -->
+  <div id="login-screen">
+    <div class="login-hero">
+      <div class="login-brand-row">
+        <div class="login-brand-badge"><i class="fa-solid fa-seedling"></i></div>
+        <div>
+          <div style="font-size:20px; font-weight:800;">CSR MOBILE</div>
+          <div style="font-size:12px; opacity:0.9;">Berbagi untuk Negeri</div>
+        </div>
+      </div>
+      <h2 style="font-size:22px; font-weight:800; margin-bottom:6px;">Masuk ke Akun</h2>
+      <p style="font-size:13px; opacity:0.9; line-height:1.45;">Silakan login untuk mulai melaporkan kegiatan & dokumentasi lapangan.</p>
+    </div>
+
+    <div class="login-card">
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label"><i class="fa-regular fa-user"></i> USERNAME PETUGAS</label>
+          <input type="text" id="login-username" class="form-control" placeholder="Masukkan username..." required />
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-solid fa-lock"></i> KATA SANDI</label>
+          <input type="password" id="login-password" class="form-control" placeholder="Masukkan kata sandi..." required />
+        </div>
+        <button type="submit" class="btn-primary-full btn-primary-center" style="margin-bottom:4px;">
+          <i class="fa-solid fa-right-to-bracket"></i> Masuk Sekarang
+        </button>
+      </form>
+
+      <div class="quick-accounts">
+        <div style="font-size:12px; font-weight:700; color:var(--text-muted);">Pilih Cepat Akun Petugas CSR (3 Akun):</div>
+        <div id="quick-user-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. MAIN APPLICATION -->
+  <div id="main-app">
+    <!-- Dynamic Header -->
+    <div id="top-header"></div>
+
+    <!-- VIEW: BERANDA (KOSONG / BERSIH) -->
+    <section id="view-beranda" class="view-section active">
+      <div class="welcome-block">
+        <div class="welcome-small">Selamat Datang!</div>
+        <div class="welcome-name" id="home-user-name">Muhamad Abdul Azis</div>
+        <div class="welcome-role" id="home-user-role">Petugas CSR</div>
+      </div>
+
+      <div class="card">
+        <div class="card-row-between" style="margin-bottom:12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:34px; height:34px; border-radius:9px; background:var(--primary-soft); color:var(--primary-dark); display:flex; align-items:center; justify-content:center;">
+              <i class="fa-regular fa-calendar-check"></i>
+            </div>
+            <div>
+              <div style="font-size:13px; font-weight:700;">Ringkasan Laporan Hari Ini</div>
+              <div style="font-size:12px; color:var(--text-muted);" id="home-today-date">-</div>
+            </div>
+          </div>
+          <span class="pill-aktif"><i class="fa-solid fa-check"></i> Aktif</span>
+        </div>
+
+        <div class="summary-metric">
+          <div class="summary-metric-left"><i class="fa-regular fa-file-lines" style="color:var(--primary);"></i> Laporan Hari Ini</div>
+          <div class="summary-metric-val" id="home-today-count">0 Laporan</div>
+        </div>
+        <div class="summary-metric">
+          <div class="summary-metric-left"><i class="fa-solid fa-users" style="color:var(--primary);"></i> Penerima Manfaat</div>
+          <div class="summary-metric-val" id="home-today-beneficiaries">0 Orang</div>
+        </div>
+
+        <div class="info-banner-green" id="home-banner-status">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>Belum ada laporan yang dibuat hari ini.</span>
+        </div>
+      </div>
+
+      <button class="btn-primary-full" onclick="navigateTo('buat-laporan')">
+        <span style="display:flex; align-items:center; gap:10px;"><i class="fa-regular fa-pen-to-square"></i> Buat Laporan Baru</span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+      <div class="section-header-row">
+        <div class="section-title"><i class="fa-solid fa-chart-simple" style="color:var(--primary-dark);"></i> Statistik CSR</div>
+        <button class="btn-pill-sm" onclick="navigateTo('data-kegiatan')">Lihat Detail &gt;</button>
+      </div>
+
+      <div class="card">
+        <div class="stats-grid">
+          <div class="stat-box" onclick="navigateTo('data-kegiatan')">
+            <div class="stat-icon"><i class="fa-solid fa-handshake"></i></div>
+            <div class="stat-num" id="stat-kegiatan">0</div>
+            <div class="stat-label">Kegiatan CSR</div>
+          </div>
+          <div class="stat-box" onclick="navigateTo('penerima-manfaat')">
+            <div class="stat-icon"><i class="fa-solid fa-people-group"></i></div>
+            <div class="stat-num" id="stat-penerima">0</div>
+            <div class="stat-label">Penerima Manfaat</div>
+          </div>
+          <div class="stat-box" onclick="navigateTo('laporan')">
+            <div class="stat-icon"><i class="fa-solid fa-seedling"></i></div>
+            <div class="stat-num" id="stat-program">0</div>
+            <div class="stat-label">Program</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: BUAT LAPORAN HARIAN (MULTI-FOTO & PROGRAM KETIK MANUAL) -->
+    <section id="view-buat-laporan" class="view-section">
+      <div class="card">
+        <form id="report-form">
+          <div class="form-group">
+            <label class="form-label"><i class="fa-regular fa-calendar"></i> Tanggal Kegiatan</label>
+            <input type="date" id="inp-tanggal" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-pen"></i> Nama Kegiatan</label>
+            <input type="text" id="inp-nama" class="form-control" placeholder="Contoh: Pelatihan UMKM" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-hand-holding-heart"></i> Program CSR</label>
+            <input type="text" id="inp-program" class="form-control" placeholder="Ketik nama program CSR..." required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-location-dot"></i> Lokasi Kegiatan</label>
+            <input type="text" id="inp-lokasi" class="form-control" placeholder="Contoh: Desa Sukamaju" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-users"></i> Jumlah Penerima Manfaat</label>
+            <div class="input-inline-unit">
+              <input type="number" id="inp-penerima" class="form-control" placeholder="0" min="1" required />
+              <span>Orang</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-align-left"></i> Uraian Kegiatan</label>
+            <textarea id="inp-uraian" class="form-control" rows="3" placeholder="Tuliskan deskripsi singkat pelaksanaan kegiatan..." required></textarea>
+          </div>
+
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label"><i class="fa-solid fa-camera"></i> Dokumentasi Kegiatan (Bisa Banyak Foto)</label>
+            <input type="file" id="inp-photos" accept="image/*" multiple style="display:none;" />
+            <div class="photo-grid" id="photo-preview-grid">
+              <button type="button" class="btn-add-photo" onclick="document.getElementById('inp-photos').click()">
+                <i class="fa-solid fa-plus"></i>
+                <span>Tambah Foto</span>
+              </button>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">
+              Foto otomatis dikompresi agar cepat terkirim ke Google Drive.
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <button type="button" id="btn-submit-report" class="btn-primary-full btn-primary-center" onclick="submitReport()">
+        <i class="fa-regular fa-floppy-disk"></i> Simpan Laporan
+      </button>
+    </section>
+
+    <!-- VIEW: DAFTAR LAPORAN -->
+    <section id="view-laporan" class="view-section">
+      <div class="filter-row" id="report-filters">
+        <button class="filter-chip active" onclick="setReportFilter('Semua', this)">Semua</button>
+        <button class="filter-chip" onclick="setReportFilter('Disetujui', this)">Disetujui</button>
+        <button class="filter-chip" onclick="setReportFilter('Menunggu', this)">Menunggu</button>
+        <button class="filter-chip" onclick="setReportFilter('Ditolak', this)">Ditolak</button>
+      </div>
+      <div id="report-list-container"></div>
+    </section>
+
+    <!-- VIEW: DETAIL LAPORAN -->
+    <section id="view-detail-laporan" class="view-section">
+      <div class="card" id="detail-laporan-content"></div>
+    </section>
+
+    <!-- VIEW: DATA KEGIATAN -->
+    <section id="view-data-kegiatan" class="view-section">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search-kegiatan" class="form-control" placeholder="Cari kegiatan..." oninput="renderDataKegiatan()" />
+      </div>
+      <div id="data-kegiatan-list"></div>
+    </section>
+
+    <!-- VIEW: PENERIMA MANFAAT -->
+    <section id="view-penerima-manfaat" class="view-section">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search-penerima" class="form-control" placeholder="Cari lokasi / kegiatan penerima..." oninput="renderPenerimaManfaat()" />
+      </div>
+      <div id="penerima-manfaat-list"></div>
+    </section>
+
+    <!-- VIEW: NOTIFIKASI (KOSONG) -->
+    <section id="view-notifikasi" class="view-section">
+      <div class="card" style="text-align:center; padding:32px 16px; color:var(--text-muted);">
+        <i class="fa-regular fa-bell-slash" style="font-size:28px; margin-bottom:10px; color:#94A3B8;"></i>
+        <div style="font-weight:700; font-size:14px; color:var(--text-main);">Belum Ada Notifikasi</div>
+        <div style="font-size:12px; margin-top:4px;">Notifikasi aktivitas laporan akan muncul di sini.</div>
+      </div>
+    </section>
+
+    <!-- VIEW: PROFIL -->
+    <section id="view-profil" class="view-section">
+      <div class="card profile-hero-card">
+        <div class="profile-avatar-lg" id="profile-avatar-initials">MA</div>
+        <div style="font-size:18px; font-weight:800;" id="profile-full-name">Muhamad Abdul Azis</div>
+        <div style="font-size:13px; color:var(--text-muted); margin-top:2px;" id="profile-role-text">Petugas CSR</div>
+      </div>
+
+      <div class="list-row-card" onclick="navigateTo('laporan')">
+        <div class="list-row-left">
+          <div class="icon-circle-green"><i class="fa-solid fa-clock-rotate-left"></i></div>
+          <span style="font-weight:700; font-size:14px;">Riwayat Aktivitas</span>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);"></i>
+      </div>
+
+      <div class="list-row-card" onclick="navigateTo('data-kegiatan')">
+        <div class="list-row-left">
+          <div class="icon-circle-green"><i class="fa-regular fa-file-lines"></i></div>
+          <span style="font-weight:700; font-size:14px;">Laporan Saya</span>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);"></i>
+      </div>
+
+      <div class="list-row-card" onclick="navigateTo('penerima-manfaat')">
+        <div class="list-row-left">
+          <div class="icon-circle-green"><i class="fa-solid fa-chart-column"></i></div>
+          <span style="font-weight:700; font-size:14px;">Statistik Pribadi</span>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);"></i>
+      </div>
+
+      <div class="list-row-card" onclick="navigateTo('pengaturan')">
+        <div class="list-row-left">
+          <div class="icon-circle-green"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+          <span style="font-weight:700; font-size:14px;">Pengaturan & Koneksi G-Drive</span>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);"></i>
+      </div>
+
+      <div class="list-row-card" onclick="logoutUser()">
+        <div class="list-row-left">
+          <div class="icon-circle-green" style="background:var(--danger-soft); color:var(--danger);"><i class="fa-solid fa-right-from-bracket"></i></div>
+          <span style="font-weight:700; font-size:14px; color:var(--danger);">Keluar</span>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);"></i>
+      </div>
+    </section>
+
+    <!-- VIEW: PENGATURAN & URL G-DRIVE -->
+    <section id="view-pengaturan" class="view-section">
+      <div class="card">
+        <div style="font-weight:800; font-size:15px; margin-bottom:6px; color:var(--primary-dark);">
+          <i class="fa-brands fa-google-drive"></i> Koneksi Google Apps Script (/exec)
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.45;">
+          Tempelkan URL Web App dari Google Apps Script agar setiap laporan dan banyak foto langsung tersimpan ke Google Drive & Google Sheets.
+        </p>
+        <div class="form-group">
+          <label class="form-label">URL Aplikasi Web (/exec)</label>
+          <input type="url" id="inp-gas-url" class="form-control" placeholder="https://script.google.com/macros/s/.../exec" />
+        </div>
+        <button type="button" class="btn-primary-full btn-primary-center" style="margin-bottom:0;" onclick="saveGasUrl()">
+          <i class="fa-solid fa-check"></i> Simpan URL G-Drive
+        </button>
+      </div>
+
+      <div class="list-row-card" onclick="navigateTo('profil')">
+        <div class="list-row-left">
+          <div class="icon-circle-green"><i class="fa-solid fa-user"></i></div>
+          <span style="font-weight:700; font-size:14px;">Profil Saya</span>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);"></i>
+      </div>
+
+      <div class="list-row-card" onclick="showToast('Gunakan akun terdaftar pada halaman login.')">
+        <div class="list-row-left">
+          <div class="icon-circle-green"><i class="fa-solid fa-lock"></i></div>
+          <span style="font-weight:700; font-size:14px;">Ubah Password</span>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);"></i>
+      </div>
+
+      <div class="list-row-card" onclick="logoutUser()">
+        <div class="list-row-left">
+          <div class="icon-circle-green" style="background:var(--danger-soft); color:var(--danger);"><i class="fa-solid fa-right-from-bracket"></i></div>
+          <span style="font-weight:700; font-size:14px; color:var(--danger);">Keluar</span>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted);"></i>
+      </div>
+
+      <div style="text-align:center; padding:16px 0; color:var(--primary-dark);">
+        <div style="font-weight:800; font-size:13px;">CSR v1.0.0</div>
+        <div style="font-size:12px; color:var(--text-muted); font-style:italic;">Dukung program CSR untuk masyarakat lebih baik</div>
+      </div>
+    </section>
+
+    <!-- BOTTOM NAVIGATION BAR (TANPA BADGE NOTIFIKASI) -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-nav="beranda" onclick="navigateTo('beranda')">
+        <i class="fa-solid fa-house"></i>
+        <span>Beranda</span>
+      </button>
+      <button class="nav-item" data-nav="laporan" onclick="navigateTo('laporan')">
+        <i class="fa-regular fa-file-lines"></i>
+        <span>Laporan</span>
+      </button>
+      <button class="nav-item" data-nav="notifikasi" onclick="navigateTo('notifikasi')">
+        <i class="fa-regular fa-bell"></i>
+        <span>Notifikasi</span>
+      </button>
+      <button class="nav-item" data-nav="profil" onclick="navigateTo('profil')">
+        <i class="fa-regular fa-user"></i>
+        <span>Profil</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+</div>
+
+<script>
+  // =========================================================
+  // 1. DAFTAR 3 AKUN PETUGAS CSR PERMANEN
+  // =========================================================
+  const CSR_USERS = [
+    {
+      username: 'azis.csr',
+      password: '123',
+      name: 'Muhamad Abdul Azis',
+      role: 'Petugas CSR',
+      initials: 'MA'
+    },
+    {
+      username: 'ghazali.csr',
+      password: '123',
+      name: 'Akhmad Ghazali Noor',
+      role: 'Petugas CSR',
+      initials: 'AG'
+    },
+    {
+      username: 'wira.csr',
+      password: '123',
+      name: 'Wira Pugar',
+      role: 'Petugas CSR',
+      initials: 'WP'
+    }
+  ];
+
+  // URL Google Apps Script Web App (/exec) aktif
+  const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzlKa4iSWWwQo7XoOyxSUZmmf2hnNN6OS2VyoxBK29phxUMhF8rt-hEi5Gy6ssUgc1Jw/exec';
+
+  const FALLBACK_PHOTO = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260"><rect width="100%" height="100%" fill="#1B6B38"/><text x="200" y="136" fill="#FFFFFF" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle">Dokumentasi CSR</text></svg>`);
+
+  // State (Kosong saat awal dipakai)
+  let currentUser = JSON.parse(localStorage.getItem('csr_current_user') || 'null');
+  let reports = JSON.parse(localStorage.getItem('csr_reports_v2') || '[]');
+  let currentFilter = 'Semua';
+  let uploadedPhotos = [];
+
+  // Init
+  window.addEventListener('DOMContentLoaded', () => {
+    renderQuickUsers();
+    document.getElementById('inp-tanggal').valueAsDate = new Date();
+    const savedGasUrl = localStorage.getItem('csr_gas_url') || DEFAULT_GAS_URL;
+    localStorage.setItem('csr_gas_url', savedGasUrl);
+    document.getElementById('inp-gas-url').value = savedGasUrl;
+
+    setTimeout(() => {
+      document.getElementById('splash-screen').classList.add('hidden');
+      if (currentUser) {
+        openMainApp();
+      } else {
+        document.getElementById('login-screen').style.display = 'flex';
+      }
+    }, 1000);
+  });
+
+  function renderQuickUsers() {
+    const container = document.getElementById('quick-user-list');
+    container.innerHTML = CSR_USERS.map((u, idx) => `
+      <button type="button" class="quick-account-btn" onclick="fillAndLogin(${idx})">
+        <div>
+          <div style="font-weight:700; font-size:13px; color:var(--primary-dark);">${u.name}</div>
+          <div style="font-size:11px; color:var(--text-muted);">User: ${u.username} &bull; ${u.role}</div>
+        </div>
+        <span style="font-size:12px; font-weight:700; color:var(--primary);">Masuk &rarr;</span>
+      </button>
+    `).join('');
+  }
+
+  function fillAndLogin(index) {
+    const u = CSR_USERS[index];
+    document.getElementById('login-username').value = u.username;
+    document.getElementById('login-password').value = u.password;
+    currentUser = u;
+    localStorage.setItem('csr_current_user', JSON.stringify(u));
+    openMainApp();
+    showToast(`Selamat datang, ${u.name}`);
+  }
+
+  document.getElementById('login-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const uname = document.getElementById('login-username').value.trim().toLowerCase();
+    const pass = document.getElementById('login-password').value.trim();
+    const found = CSR_USERS.find(u => u.username.toLowerCase() === uname && u.password === pass);
+    if (!found) {
+      showToast('Username atau kata sandi salah!');
+      return;
+    }
+    currentUser = found;
+    localStorage.setItem('csr_current_user', JSON.stringify(found));
+    openMainApp();
+    showToast(`Selamat datang, ${found.name}`);
+  });
+
+  function logoutUser() {
+    localStorage.removeItem('csr_current_user');
+    currentUser = null;
+    document.getElementById('main-app').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+  }
+
+  function openMainApp() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-app').style.display = 'flex';
+
+    document.getElementById('home-user-name').textContent = currentUser.name;
+    document.getElementById('home-user-role').textContent = currentUser.role;
+    document.getElementById('profile-avatar-initials').textContent = currentUser.initials;
+    document.getElementById('profile-full-name').textContent = currentUser.name;
+    document.getElementById('profile-role-text').textContent = currentUser.role;
+
+    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    document.getElementById('home-today-date').textContent = new Date().toLocaleDateString('id-ID', options);
+
+    updateDashboardStats();
+    navigateTo('beranda');
+  }
+
+  function updateDashboardStats() {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const todayReports = reports.filter(r => r.tanggal === todayStr);
+    const todayBen = todayReports.reduce((acc, r) => acc + Number(r.penerima || 0), 0);
+
+    const totalReports = reports.length;
+    const totalBen = reports.reduce((acc, r) => acc + Number(r.penerima || 0), 0);
+    const uniquePrograms = new Set(reports.map(r => (r.program || '').trim().toLowerCase()).filter(Boolean)).size;
+
+    document.getElementById('home-today-count').textContent = `${todayReports.length} Laporan`;
+    document.getElementById('home-today-beneficiaries').textContent = `${todayBen.toLocaleString('id-ID')} Orang`;
+    document.getElementById('stat-kegiatan').textContent = totalReports;
+    document.getElementById('stat-penerima').textContent = totalBen.toLocaleString('id-ID');
+    document.getElementById('stat-program').textContent = uniquePrograms;
+
+    const bannerEl = document.getElementById('home-banner-status');
+    if (todayReports.length > 0) {
+      bannerEl.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>${todayReports.length} laporan hari ini sudah tersimpan.</span>`;
+    } else {
+      bannerEl.innerHTML = `<i class="fa-solid fa-circle-info"></i><span>Belum ada laporan yang dibuat hari ini.</span>`;
+    }
+  }
+
+  // Navigation
+  function navigateTo(viewName) {
+    document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+    const target = document.getElementById(`view-${viewName}`);
+    if (target) target.classList.add('active');
+
+    document.querySelectorAll('.nav-item').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.nav === viewName);
+    });
+
+    renderHeader(viewName);
+
+    if (viewName === 'laporan') renderReportList();
+    if (viewName === 'data-kegiatan') renderDataKegiatan();
+    if (viewName === 'penerima-manfaat') renderPenerimaManfaat();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderHeader(viewName) {
+    const header = document.getElementById('top-header');
+    if (viewName === 'beranda') {
+      header.innerHTML = `
+        <div class="header-home">
+          <div class="header-brand">
+            <i class="fa-solid fa-seedling" style="font-size:26px; color:#86EFAC;"></i>
+            <div>
+              <div class="header-brand-title">CSR</div>
+              <div class="header-brand-sub">Berbagi untuk Negeri</div>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button class="notif-bell" onclick="navigateTo('notifikasi')" title="Notifikasi">
+              <i class="fa-solid fa-bell"></i>
+            </button>
+            <div class="avatar-circle" onclick="navigateTo('profil')" title="Profil">${currentUser.initials}</div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    const titles = {
+      'buat-laporan': { title: 'Buat Laporan Harian', back: 'beranda', right: '' },
+      'laporan': { title: 'Daftar Laporan', back: 'beranda', right: '' },
+      'detail-laporan': { title: 'Detail Laporan', back: 'laporan', right: '' },
+      'data-kegiatan': { title: 'Data Kegiatan', back: 'beranda', right: '' },
+      'penerima-manfaat': { title: 'Penerima Manfaat', back: 'beranda', right: '' },
+      'notifikasi': { title: 'Notifikasi', back: 'beranda', right: '' },
+      'profil': { title: 'Profil', back: 'beranda', right: '<button class="btn-icon-white" onclick="navigateTo(\'pengaturan\')"><i class="fa-solid fa-gear"></i></button>' },
+      'pengaturan': { title: 'Pengaturan', back: 'profil', right: '' }
+    };
+
+    const cfg = titles[viewName] || { title: 'CSR Mobile', back: 'beranda', right: '' };
+    header.innerHTML = `
+      <div class="header-subpage">
+        <div class="header-sub-left">
+          <button class="btn-icon-white" onclick="navigateTo('${cfg.back}')"><i class="fa-solid fa-arrow-left"></i></button>
+          <div class="header-sub-title">${cfg.title}</div>
+        </div>
+        <div>${cfg.right}</div>
+      </div>
+    `;
+  }
+
+  // =========================================================
+  // 2. MULTI-PHOTO UPLOAD & KOMPRESI OTOMATIS
+  // =========================================================
+  document.getElementById('inp-photos').addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+
+    for (const file of files) {
+      if (uploadedPhotos.length >= 8) {
+        showToast('Maksimal 8 foto per laporan.');
+        break;
+      }
+      const compressed = await compressImage(file, 900, 0.72);
+      uploadedPhotos.push(compressed);
+    }
+    e.target.value = '';
+    renderPhotoGrid();
+  });
+
+  function compressImage(file, maxWidth, quality) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let w = img.width;
+          let h = img.height;
+          if (w > maxWidth) {
+            h = Math.round((h * maxWidth) / w);
+            w = maxWidth;
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function renderPhotoGrid() {
+    const grid = document.getElementById('photo-preview-grid');
+    const itemsHtml = uploadedPhotos.map((src, idx) => `
+      <div class="photo-thumb-item">
+        <img src="${src}" alt="Foto ${idx + 1}" />
+        <button type="button" class="btn-remove-photo" onclick="removePhoto(${idx})"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    `).join('');
+
+    grid.innerHTML = itemsHtml + `
+      <button type="button" class="btn-add-photo" onclick="document.getElementById('inp-photos').click()">
+        <i class="fa-solid fa-plus"></i>
+        <span>Tambah Foto</span>
+      </button>
+    `;
+  }
+
+  function removePhoto(index) {
+    uploadedPhotos.splice(index, 1);
+    renderPhotoGrid();
+  }
+
+  // =========================================================
+  // 3. SIMPAN LAPORAN & KIRIM MULTI-FOTO KE GOOGLE APPS SCRIPT
+  // =========================================================
+  async function submitReport() {
+    const tanggal = document.getElementById('inp-tanggal').value;
+    const nama = document.getElementById('inp-nama').value.trim();
+    const program = document.getElementById('inp-program').value.trim();
+    const lokasi = document.getElementById('inp-lokasi').value.trim();
+    const penerima = Number(document.getElementById('inp-penerima').value);
+    const uraian = document.getElementById('inp-uraian').value.trim();
+
+    if (!tanggal || !nama || !program || !lokasi || !penerima || !uraian) {
+      showToast('Lengkapi semua kolom laporan terlebih dahulu.');
+      return;
+    }
+    if (uploadedPhotos.length === 0) {
+      showToast('Tambahkan minimal 1 foto dokumentasi kegiatan.');
+      return;
+    }
+
+    const btn = document.getElementById('btn-submit-report');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim Laporan & Foto...';
+
+    const dateObj = new Date(tanggal);
+    const tanggalLabel = dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    const tanggalFull = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    const newReport = {
+      id: 'RPT-' + Date.now().toString().slice(-4),
+      tanggal,
+      tanggalLabel,
+      tanggalFull,
+      nama,
+      program,
+      lokasi,
+      penerima,
+      uraian,
+      status: 'Disetujui',
+      petugas: currentUser.name,
+      photos: [...uploadedPhotos]
+    };
+
+    const gasUrl = (localStorage.getItem('csr_gas_url') || DEFAULT_GAS_URL).trim();
+    if (gasUrl) {
+      try {
+        await fetch(gasUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            petugas: currentUser.name,
+            username: currentUser.username,
+            tanggal,
+            namaKegiatan: nama,
+            program,
+            lokasi,
+            penerimaManfaat: penerima,
+            uraian,
+            images: uploadedPhotos
+          })
+        });
+      } catch (err) {
+        console.error('Gagal mengirim ke Apps Script:', err);
+      }
+    }
+
+    reports.unshift(newReport);
+    localStorage.setItem('csr_reports_v2', JSON.stringify(reports));
+
+    // Reset Form
+    document.getElementById('report-form').reset();
+    document.getElementById('inp-tanggal').valueAsDate = new Date();
+    uploadedPhotos = [];
+    renderPhotoGrid();
+    updateDashboardStats();
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-regular fa-floppy-disk"></i> Simpan Laporan';
+
+    showToast(gasUrl ? 'Laporan & foto terkirim ke Google Drive!' : 'Laporan tersimpan!');
+    navigateTo('laporan');
+  }
+
+  // Render Daftar Laporan
+  function setReportFilter(status, btnEl) {
+    currentFilter = status;
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    btnEl.classList.add('active');
+    renderReportList();
+  }
+
+  function renderReportList() {
+    const container = document.getElementById('report-list-container');
+    const filtered = currentFilter === 'Semua'
+      ? reports
+      : reports.filter(r => r.status === currentFilter);
+
+    if (!filtered.length) {
+      container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-muted); font-size:13px; padding:24px 16px;">Belum ada laporan tersimpan.</div>`;
+      return;
+    }
+
+    container.innerHTML = filtered.map(r => `
+      <div class="report-item-card" onclick="openReportDetail('${r.id}')">
+        <img src="${r.photos[0] || FALLBACK_PHOTO}" class="report-item-thumb" alt="${r.nama}" />
+        <div class="report-item-body">
+          <div class="report-item-top">
+            <span class="report-date">${r.tanggalLabel}</span>
+            <span class="status-badge status-${r.status}">
+              ${r.status === 'Disetujui' ? '✓' : r.status === 'Menunggu' ? '●' : '✕'} ${r.status}
+            </span>
+          </div>
+          <div class="report-title">${r.nama}</div>
+          <div class="report-meta"><i class="fa-solid fa-location-dot" style="color:var(--primary);"></i> ${r.lokasi} &bull; ${r.penerima} Orang</div>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted); font-size:12px;"></i>
+      </div>
+    `).join('');
+  }
+
+  function openReportDetail(id) {
+    const r = reports.find(item => item.id === id);
+    if (!r) return;
+
+    const container = document.getElementById('detail-laporan-content');
+    container.innerHTML = `
+      <div class="card-row-between">
+        <h3 style="font-size:18px; font-weight:800;">${r.nama}</h3>
+        <span class="status-badge status-${r.status}">✓ ${r.status}</span>
+      </div>
+      <div style="font-size:12px; color:var(--text-muted); margin-top:6px; line-height:1.6;">
+        <div><i class="fa-regular fa-calendar" style="width:16px; color:var(--primary);"></i> ${r.tanggalFull}</div>
+        <div><i class="fa-solid fa-location-dot" style="width:16px; color:var(--primary);"></i> ${r.lokasi}</div>
+        <div><i class="fa-solid fa-user-check" style="width:16px; color:var(--primary);"></i> Petugas: <strong>${r.petugas}</strong></div>
+      </div>
+
+      <img src="${r.photos[0] || FALLBACK_PHOTO}" class="detail-hero-img" alt="${r.nama}" />
+
+      <div style="font-weight:700; font-size:14px; margin-top:6px;">Informasi Kegiatan</div>
+      <table class="detail-table">
+        <tr><td>Program</td><td>: ${r.program}</td></tr>
+        <tr><td>Penerima Manfaat</td><td>: ${r.penerima} Orang</td></tr>
+        <tr><td>Uraian</td><td>: ${r.uraian}</td></tr>
+      </table>
+
+      <div style="font-weight:700; font-size:14px; margin-top:14px;">Dokumentasi (${r.photos.length} Foto)</div>
+      <div class="detail-docs-grid">
+        ${r.photos.map(p => `<img src="${p}" alt="Dokumentasi" />`).join('')}
+      </div>
+    `;
+    navigateTo('detail-laporan');
+  }
+
+  function renderDataKegiatan() {
+    const q = (document.getElementById('search-kegiatan').value || '').toLowerCase();
+    const container = document.getElementById('data-kegiatan-list');
+    const list = reports.filter(r => r.nama.toLowerCase().includes(q) || r.lokasi.toLowerCase().includes(q));
+
+    if (!list.length) {
+      container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-muted); font-size:13px; padding:24px 16px;">Belum ada data kegiatan.</div>`;
+      return;
+    }
+
+    container.innerHTML = list.map(r => `
+      <div class="report-item-card" onclick="openReportDetail('${r.id}')">
+        <img src="${r.photos[0] || FALLBACK_PHOTO}" class="report-item-thumb" alt="${r.nama}" />
+        <div class="report-item-body">
+          <div class="report-title">${r.nama}</div>
+          <div class="report-meta">${r.tanggalLabel}</div>
+          <div class="report-meta">${r.lokasi}</div>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted); font-size:12px;"></i>
+      </div>
+    `).join('');
+  }
+
+  function renderPenerimaManfaat() {
+    const q = (document.getElementById('search-penerima').value || '').toLowerCase();
+    const container = document.getElementById('penerima-manfaat-list');
+    const list = reports.filter(r => r.lokasi.toLowerCase().includes(q) || r.nama.toLowerCase().includes(q));
+
+    if (!list.length) {
+      container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-muted); font-size:13px; padding:24px 16px;">Belum ada data penerima manfaat.</div>`;
+      return;
+    }
+
+    container.innerHTML = list.map(r => `
+      <div class="list-row-card" onclick="openReportDetail('${r.id}')">
+        <div class="list-row-left">
+          <div class="icon-circle-green"><i class="fa-solid fa-users"></i></div>
+          <div>
+            <div style="font-weight:700; font-size:14px;">${r.lokasi} (${r.penerima} Orang)</div>
+            <div style="font-size:12px; color:var(--text-muted);">${r.nama} &bull; ${r.tanggalLabel}</div>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--text-muted); font-size:12px;"></i>
+      </div>
+    `).join('');
+  }
+
+  function saveGasUrl() {
+    const url = document.getElementById('inp-gas-url').value.trim();
+    localStorage.setItem('csr_gas_url', url);
+    showToast('URL Google Drive berhasil disimpan!');
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3200);
+  }
+</script>
+</body>
+</html>
