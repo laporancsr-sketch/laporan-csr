@@ -47,7 +47,6 @@
       min-height: 100vh;
     }
 
-    /* Mobile Frame */
     .app-shell {
       width: 100%;
       max-width: 440px;
@@ -376,7 +375,7 @@
       color: var(--primary);
     }
 
-    /* Primary CTA Button */
+    /* Primary & Danger CTA Buttons */
     .btn-primary-full {
       width: 100%;
       background: var(--primary-dark);
@@ -891,7 +890,6 @@
 
   <!-- 3. MAIN APPLICATION -->
   <div id="main-app">
-    <!-- Dynamic Header -->
     <div id="top-header"></div>
 
     <!-- VIEW: BERANDA -->
@@ -1147,9 +1145,6 @@
 </div>
 
 <script>
-  // =========================================================
-  // 1. DAFTAR 3 AKUN PETUGAS CSR PERMANEN
-  // =========================================================
   const CSR_USERS = [
     {
       username: 'azis.csr',
@@ -1174,18 +1169,15 @@
     }
   ];
 
-  // URL Google Apps Script Web App (/exec) aktif
   const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzJ3dlLla-s-K0jAgwclCC39IBGTEg9RolR84zVGwVQn9WiXR0fYP2sL7YTlTwreNYS/exec';
 
   const FALLBACK_PHOTO = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260"><rect width="100%" height="100%" fill="#1B6B38"/><text x="200" y="136" fill="#FFFFFF" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle">Dokumentasi CSR</text></svg>`);
 
-  // State
   let currentUser = JSON.parse(localStorage.getItem('csr_current_user') || 'null');
   let reports = JSON.parse(localStorage.getItem('csr_reports_v3') || '[]');
   let currentFilter = 'Semua';
   let uploadedPhotos = [];
 
-  // Init
   window.addEventListener('DOMContentLoaded', () => {
     renderQuickUsers();
     document.getElementById('inp-tanggal').valueAsDate = new Date();
@@ -1283,7 +1275,6 @@
     }
   }
 
-  // Navigation
   function navigateTo(viewName) {
     document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
     const target = document.getElementById(`view-${viewName}`);
@@ -1345,9 +1336,6 @@
     `;
   }
 
-  // =========================================================
-  // 2. MULTI-PHOTO UPLOAD & KOMPRESI OTOMATIS
-  // =========================================================
   document.getElementById('inp-photos').addEventListener('change', async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
@@ -1411,9 +1399,6 @@
     renderPhotoGrid();
   }
 
-  // =========================================================
-  // 3. SIMPAN LAPORAN & KIRIM MULTI-FOTO KE GOOGLE APPS SCRIPT
-  // =========================================================
   async function submitReport() {
     const tanggal = document.getElementById('inp-tanggal').value;
     const nama = document.getElementById('inp-nama').value.trim();
@@ -1475,7 +1460,6 @@
     reports.unshift(newReport);
     localStorage.setItem('csr_reports_v3', JSON.stringify(reports));
 
-    // Reset Form
     document.getElementById('report-form').reset();
     document.getElementById('inp-tanggal').valueAsDate = new Date();
     uploadedPhotos = [];
@@ -1489,7 +1473,6 @@
     navigateTo('laporan');
   }
 
-  // Render Daftar Laporan
   function setReportFilter(status, btnEl) {
     currentFilter = status;
     document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
